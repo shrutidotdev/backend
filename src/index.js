@@ -1,14 +1,10 @@
-import express from "express"
 import dotenv from "dotenv"
+import connectDatabase from "./db/database.js"
+import app from "./app.js"
 
-dotenv.config() 
+dotenv.config()
+await connectDatabase()
 
-const app = express()
-app.use()
-
-app.get("/", ( req, res ) => {
-    res.send("YoU k;guiwgeui")
-})
 
 console.log(process.env.PORT)
 const port = process.env.PORT || 4000
