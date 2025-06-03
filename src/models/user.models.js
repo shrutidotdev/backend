@@ -84,17 +84,16 @@ userSchema.methods.generateAccessToken = function() {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY
     }
 }
-userSchema.methods.generateRefreshToken = function() {
+    userSchema.methods.generateRefreshToken = function() {
      return jwt.sign(
         _id = this._id,
         email = this.email
     ),
     process.env.REFRESH_TOKEN_SECRET, 
-    {
+    { 
         algorithm: "HS256",
         expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-//        issuer: process.env.REFRESH_TOKEN_ISSUER
-
+        //issuer: process.env.REFRESH_TOKEN_ISSUER
     }
 }
 export const User = mongoose.model("User", userSchema)
