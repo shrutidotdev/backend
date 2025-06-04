@@ -3,16 +3,17 @@
 //const asyncHandler = (func) => async() => {}
 
 
-const asyncHandler = (func) => async(  req , res , next) => {
+const asyncHandler = (func) => async (req, res, next) => {
     try {
-        await func(req, res , next)
+        await func(req, res, next);
     } catch (error) {
-        res.status(err.code || 500).json({
+        console.error("Caught error:", error); // 👀 See actual error object
+        res.status(error.statusCode || 500).json({
             success: false,
-            message: err.message || "Something went wrong in handler"
-        })
+            message: error.message || "Something went wrong in handler",
+        });
     }
-}
+};
 
 // const asyncHandler = (requestHandler) => {
 //  return (req ,res , next) => {
