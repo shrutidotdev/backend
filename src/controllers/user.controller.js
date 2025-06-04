@@ -58,7 +58,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     fullname,
     avatar: avatar.url,
     coverImage: coverImage?.url || "",
-    username,
+    username: username.toLowerCase(),
     email,
     password
   })
