@@ -6,6 +6,7 @@
 //     }
 // }
 
+
 //Via IFEE
 
     // IFEE Approch
@@ -22,3 +23,5 @@
             console.error("Error while connecting to mongodb database", error?.message)
         }
     })()
+
+//app.use(cookieParser) => req.cookie 
