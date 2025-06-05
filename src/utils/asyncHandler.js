@@ -7,10 +7,10 @@ const asyncHandler = (func) => async (req, res, next) => {
     try {
         await func(req, res, next);
     } catch (error) {
-        console.error("Caught error:", error); // 👀 See actual error object
+        console.error("Error in asyncHandler::", error); // 👀 See actual error object
         res.status(error.statusCode || 500).json({
             success: false,
-            message: error.message || "Something went wrong in handler",
+            message: error.message || "Internal Server Error",
         });
     }
 };

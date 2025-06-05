@@ -16,6 +16,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   // Check for user creation success
   // Return response
   const { username, email, fullname, password } = req.body;
+  //const { coverImage, avatar } = req.files
   console.log("Request body:", req.body);
   console.log("Request files:", req.files);
 
@@ -39,8 +40,8 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Handle image/avatar uploads - avatar(required) and coverImage
-  const avatarLocalPath = req.files?.avatar[0]?.path
-  const coverImageLocalPath = req.files?.coverImage[0]?.path
+  const avatarLocalPath = req.files?.avatar?.[0]?.path
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar is required")
@@ -66,11 +67,11 @@ export const registerUser = asyncHandler(async (req, res) => {
   // Remove password and refresh token fields from response
   const createUser =  await User.findById(user._id).select(
     "-password -refreshToken"
-  )
+  ).lean()
   // Check for user creation success
   if(!createUser){
     throw new ApiError(500, "Something went wrong while registering the user")
   }
   // Return response
-  return new ApiResponse(200, createUser, "User registered successfully✅")
+  return res.status(200).json(new ApiResponse(201, createUser, "User registered successfully✅"))
 })
