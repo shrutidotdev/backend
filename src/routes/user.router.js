@@ -21,7 +21,7 @@ router.route("/register").post(
 )
 router.route("/login").post(loginUser)
 
-// secured route 
+// secured route => verifyJwt middleware whicch runs because of next() to run forward to logOutUser
 router.route("/logout").post(verifyJwt , logOutUser)
 export default router;
 

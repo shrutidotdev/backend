@@ -47,7 +47,6 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Password is required"],
         minlength: [6, "Password must be at least 6 characters long"],
-        select: false // Exclude password from queries by default
     },
     refreshToken: {
         type: String,
@@ -67,8 +66,15 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
-userSchema.methods.isPasswordMatch = async function (password) {
-    return await bcrypt.compare(password, this.password)
+userSchema.methods.isPasswordMatch = async function(password) {
+    console.log("Input password:", password);
+    console.log("Stored hash:", this.password);
+    
+    if (!password || !this.password) {
+        throw new Error("Password and hash are required for comparison");
+    }
+    
+    return await bcrypt.compare(password, this.password);
 }
 
 userSchema.methods.generateAccessToken = function () {

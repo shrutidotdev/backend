@@ -16,6 +16,7 @@ app.use(express.json({
 app.use(express.urlencoded({ extended: true, limit : "16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
+console.log(cookieParser())
 
 app.get("/", (req, res ) => {
     res.send("wlefj")
