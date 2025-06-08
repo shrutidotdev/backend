@@ -183,6 +183,8 @@ export const logOutUser = asyncHandler(async (req, res, next) => {
 // fo rnused like res can get replaced with _
 
 export const refreshAccessToken = asyncHandler(async (req, res) => {
+  // req.cookies.refreshToken => comming from the cookies 
+  // req.body.refreshToken => comming from the mobile devices 
   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
   if (!incomingRefreshToken) {
@@ -190,16 +192,26 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 
   try {
+    // Verify the incoming refresh token
     const decode = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
+
+    // Find the user
     const user = await User.findById(decode._id);
+
     if(!user || user.refreshToken !== incomingRefreshToken){
       throw new ApiError(403, "Invalid refresh token")
     }
-    const newAccessToken = user.generateAccessToken();
-    const newRefreshToken = user.generateRefreshToken();
+     // ✅ OPTION 1: Use your utility function (recommended)
+     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-    user.refreshToken = newRefreshToken;
+     // ✅ OPTION 2: Or call individual methods directly
+     // const accessToken = user.generateAccessToken();
+     // const refreshToken = user.generateRefreshToken();
+     // user.refreshToken = refreshToken;
+     // await user.save({ validateBeforeSave: false });
+ 
 
+    user.refreshToken = refreshToken;
     const options = {
       httpOnly: true,
       secure: true
@@ -210,9 +222,13 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
    
     return res
     .status(200)
-    .cookie("accessToken", newAccessToken, options)
-    .cookie("refreshToken", newRefreshToken, options)
-    .json(new ApiResponse(200, {} , "Access token refreshed"))
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, {
+      accessToken,
+      refreshToken
+    } , "Access token refreshed"))
+    
   } catch (error) {
     throw new ApiError(401, "Invalid refresh token")
   }
