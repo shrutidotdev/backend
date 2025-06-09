@@ -1,16 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const commentschema = new mongoose.Schema({
+const commentschema = new Schema({
     content: {
         type: String,
         required: [true, "Content is required for commeting"]
     },
     videos: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Video"
         },
     owner: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User"
         }
 }, {timestamps: true})

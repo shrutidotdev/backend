@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const playlistschema = new mongoose.Schema({
+const playlistschema = new Schema({
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -15,11 +15,11 @@ const playlistschema = new mongoose.Schema({
         maxlength: [300, "Description must not exceed 300 characters"]
     },
     videos: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Video"
     },
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User"
     }
 }, { timestamps: true});

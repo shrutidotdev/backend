@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const videoschema = new mongoose.Schema({
+const videoschema = new Schema({
     video: {
         type: String,
         required: [true, "Video URL is required"],
@@ -11,7 +11,7 @@ const videoschema = new mongoose.Schema({
         required: [true, "Thumbnail URL is required"],
     },
     owner:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: [true, "Owner is required"]
     },
